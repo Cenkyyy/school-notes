@@ -1,16 +1,119 @@
 ## Lecture 1
 
+#### 0. Not asked, but might be useful
+
+- Finding weight values means minimizing an error function between the real target values and their predictions:
+  - popular and simple error function is MSE (mean squared error):
+    - $MSE(w) = \frac{1}{N} \sum_{i=1}^N (y(x_i,w) - t_i)^2$
+    - where we have a dataset of $N$ input values $x_1,...,x_N$ and targets $t_1,...,t_N$
+    - often the $\frac{1}{N}$ is replaced by $\frac{1}{2}$, which for minimizing is equal, but the math comes out nicer
+
 #### 1. Explain how reinforcement learning differs from supervised and unsupervised learning in terms of the type of input the learning algorithms use to improve model performance. [5]
+
+- **Supervised learning**
+  - as a dataset, we are given inputs and their respective outputs (labels or targets).
+  - the goal is to find a model that, given an input, correctly assigns the correct output.
+- **Unsupervised learning**
+  - as a dataset, only inputs without desired outputs are given (raw text, raw images).
+  - the goal is typically to divide the inputs into groups of similar inputs (clustering), or to learn how inputs look and generate new data (generative models).
+- **Reinforcement leaning**
+  - the goal is to learn the behavior (policy) of an agent so that it best solves a given problem based on feedback (in form of rewards or punishments) from the environment in which it acts.
+  - We can think of this as trying to learn a new game by trying different actions and seeing how they affect the score.
 
 #### 2. Explain why we need separate training and test data. What is generalization, and how does the concept relate to underfitting and overfitting? [10]
 
+- **Optimization vs Generalization**
+  - **Optimization** tries to match the training data as well as possible
+  - **Generalization** tries to match previously unseen data as well as possible, which is ML's goal
+
+- **Why separate train and test data?**
+  - if we wouldn't separate train and test data, the model could "cheat" and exploit the data and perform well for them, however, ML's goal is to perform best as possible for all data, including **unseen** data, which in this case wouldn't be followed at all
+  - that is why we separate the dataset into train and test data, where we train the model on the train data and then test it on the test data, which act as mentioned **unseen** data
+  - note: we also keep a validation data for hyperparamaters
+
+- **How underfitting/overfitting relates to generalization?**
+  - these two terms represent the result of poor generalization
+  - **Underfitting**:
+    - model is too simple and small, causing both train and test errors high (shown by low-degree polynomial case)
+  - **Overfitting**:
+    - model fits in the train set extremely well, causing train error too low, however, this doesn't follow the ML's goal, generalization, because the test error is high
+
 #### 3. Define the three key components of Mitchell's definition of machine learning (Task $T$, Performance measure $P$, and Experience $E$). Give a concrete example for each component in the context of email spam classification. [10]
+
+A computer program is said to learn from experience $E$ with respect to some class of tasks $T$ and performance measure $P$, if its performance at tasks in $T$, as measured by $P$, improves with experience $E$.
+
+- Task $T$
+  - represents type of problem being solved:
+    - **classification**: assign one of $k$ categories to a given input $x$
+    - **regression**: predict a real target $t \in R$ for a given input $x$
+    - **structured prediction**: predict a structured object (sequence/tree/graph), e.g. a label for each token in an email or a translation of the email
+    - **denoising**: given a corrupted input, recover a clean version, e.g. remove HTML noise/boilerplate from emails
+    - **density estimation**: learn $p(x), the probability distribution of inputs, used for anomaly detection (flag email that look like potential spam)
+  
+  - concrete example for email spam:
+    - classification - decide if email are spam or ham (categories: ${spam, ham}$
+
+- Performance measure $P$
+  - represents how we measure success:
+    - **accuracy (#correct/#all), error rate, F-score**
+  - concrete example for email spam:
+    - accuracy - we label 900 email correctly as spam or ham out of 1000 emails, getting accuracy $0.9$
+    - F1-score - harmonic mean of **precision** and **recall** for the spam class, e.g. Let's say among $200$ **actual spam** and $800$ **ham** emails, our model (classifier) predicts $180$ **spam**, of which $150$ **are actual spam**, we get:
+      - **precision**: $150/180 = 0.833$
+      - **recall**: $150/200 = 0.75$
+      - **F1** $= 2 * \frac{0.833*0.75}{0.833+0.75} = 0.789$
+
+- Experience $E$
+  - represents the data the learner uses to improve:
+    - **supervised, unsupervised, reinforcement learning**
+  - concrete example for email spam:
+    - supervised learning - dataset contains emails with labels if they are spam or ham
 
 #### 4. Explain the difference between classification and regression tasks. For each task type, provide: (a) the mathematical representation of the target variable, (b) a real-world example, and (c) one appropriate evaluation metric. [10]
 
+- Let $x \in R^D$ be the input, two basic ML tasks are:
+
+- Regression tasks:
+  - **a) mathematical representation**:
+    - **target**: $t \in R$
+    - the goal is to predict **target** variable for a given $x$
+  - **b) real-world example**
+    - Predict apartment price, temperature tomorrow, energy consumption next hour
+  - **c) appropriate evaluation metric**
+    - MSE, RMSE
+
+- Classification tasks:
+  - **a) mathematical representation**:
+    - **target**: $t \in {0, 1, ..., K-1}$ where ${0, 1, ..., K-1}$ is a fixed set representing labels/classes/categories 
+    - the goal is to choose a corresponding label/class/category for given $x$
+    - we can predict the class only or the whole distribution of all classes probabilities
+  - **b) real-world example**
+    - email spam vs ham
+  - **c) appropriate evaluation metric**
+    - Accuracy, F1-score
+
 #### 5. Define the prediction function of a linear regression model and write down $L^2$-regularized mean squared error loss. [10]
 
+- Prediction function of a linear regression model:
+  - $y(x;w,b) = x_1 w_1 + x_2 w_2 + ... + x_D w_D + b = \sum_{i=1}^D {x_i w_i} + b = x^T w + b$
+  - $y(x;w) = x^T w$, if we use bias trick to avoid dealing with it separately, we enlarge input vector $x$ by padding a value 1, the bias is encoded by the weights. 
+  - $w$ are called weights and $b$ bias
+
+- $L^2$-regularized mean squared error loss:
+  - tries to prefer "simpler" models by endorsing models with smaller weights
+  - penalizes models with large weights by utilizing the following error function:
+    - $\frac{1}{2} \sum_{i=1}^N (y(x_i;w) - t_i)^2 + \frac{λ}{2} \lVert w \rVert^2$
+   
+    - Matrix form: $\frac{1}{2} \lVert Xw - t \rVert^2 + \lVert w \rVert^2$
+
 #### 6. Starting from the unregularized sum of squares error of a linear regression model, show how the explicit solution can be obtained, assuming $X^TX$ is invertible. [10]
+
+- Unregularized sum of squares error of a linear regression model:
+  - our goal is to minimize this error function:
+    - $\frac{1}{2} \sum_{i=1}^N (y(x_i;w) - t_i)^2$
+  - if we denote $X \in R^{N x D}$ the matrix of input values with $x_i$ on a row $i$ and $t \in R^N$ the vector of target values, we can write it as:
+    - $\frac{1}{2} \lVert Xw - t \rVert^2$, because:
+      - $\frac{1}{2} \lVert Xw - t \rVert^2 = \sum_i ((Xw - t)_i)^2 = \sum_i ((Xw)_i - t_i))^2 = \sum_i (x_i^T w - t_i)^2$
 
 ## Lecture 2
 
