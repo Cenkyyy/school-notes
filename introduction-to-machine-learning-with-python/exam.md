@@ -146,3 +146,23 @@ A computer program is said to learn from experience $E$ with respect to some cla
 #### 9. What methods can be used to normalize feature values? Explain why it is useful. [5]
 
 #### 10. You have a dataset with a categorical feature “color” with values {“red”, “green”, “blue”}. Explain why using integer encoding (red=0, green=1, blue=2) is problematic for linear regression. How would encode such feature instead? [10]
+
+## Lecture 3
+
+#### 1. Define binary classification, write down the perceptron algorithm, and show how a prediction is made for a given data instance $x$. [10]
+
+#### 2. Explain what it means for a dataset to be linearly separable. Give an example of a simple 2D dataset that is not linearly separable and explain why the perceptron algorithm would fail on it. [10]
+
+#### 3. For discrete random variables, define entropy, cross-entropy, and Kullback-Leibler divergence, and prove the Gibbs inequality (i.e., that KL divergence is non-negative). [20]
+
+#### 4. Explain the notion of likelihood in machine learning. What likelihood are we estimating, and why do we do it? [10]
+
+#### 5. Describe maximum likelihood estimation as minimizing NLL, cross-entropy, and KL divergence and explain whether they differ or are the same and why. [20]
+
+#### 6. Provide an intuitive justification for why cross-entropy is a good optimization objective in machine learning. What distributions do we compare in cross-entropy? Why is it good when the cross-entropy is low? [5]
+
+#### 7. Considering the binary logistic regression model, write down its parameters (including their size) and explain how we decide what classes the input data belong to (including the explicit formula for the sigmoid function). [10]
+
+#### 8. Write down an $L^2$-regularized minibatch SGD algorithm for training a binary logistic regression model, including the explicit formulas (i.e., formulas you would need to code it in numpy) of the loss function and its gradient (saying just ∇ is not enough). [20]
+
+#### 9. Compare and contrast perceptron and logistic regression by discussing: (a) what each algorithm optimizes, (b) whether each provides probability estimates, (c) whether each is guaranteed to converge, and (d) the quality of solutions each finds. [10]
