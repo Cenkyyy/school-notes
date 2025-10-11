@@ -129,23 +129,98 @@ A computer program is said to learn from experience $E$ with respect to some cla
 
 #### 1. Describe standard gradient descent and compare it to stochastic (i.e., online) gradient descent and minibatch stochastic gradient descent. Explain what it is used for in machine learning. [10]
 
+
+
 #### 2. Explain the relationship between model capacity and overfitting/underfitting. How does increasing polynomial degree in linear regression affect model capacity, and what are the consequences? [10]
+
+- Relationship between model capacity and overfitting/underfitting
+  - by modifying capacity, we can controol whether a model underfits or overfits
+
+- How does increasing polynomial degree in linear regression affect model capacity?
+  -  
+
+- What are the consequences?
+  - 
+
+Representation capacity
+Effective capacity
 
 #### 3. Explain possible intuitions behind $L^2$ regularization. [5]
 
+- If we have more models with some acceptable generalization error, then it makes sense to choose the most simple one, becuase
+  - it probably has simpler rules and doesnt remember every single result
+    - this means e.g that the changes inside the model will probably be smaller as well  
+
 #### 4. Explain the difference between hyperparameters and parameters. [5]
+
+- **Parameters**
+  - e.g. $w$ or $b$,
+  - learned from the training data when training the model
+
+-  **Hyperparameters**
+  - are parameters that cannot be learned from the training data, but need to set by us, in order to just start traning
+  - are not adapted by the learning algorithm itself
+  - e.g. polynomial degree $M$, $L^2$ strength $λ$, learning rate $α$
+  - How to set those hyperparameters?
+    - we have a dataset on input, we create:
+      - train data $~ 80%$ of data from the dataset
+      - validation set $~ 10%$ of data from the dataset
+      - test set $~ 10%$ of data from the dataset
+    - when we want to test couple of hyperparameters, we want to train multiple times, but we need to evaluate it
+      - for that, we create a validation set, on which we evaluate the trained model with tried hyperparameters
+      - if we were to use the test set for the evaluation, we would, see and train on the test data, which are supposed to act as **unseen** data, so we would violate generalization
 
 #### 5. Write an $L^2$-regularized minibatch SGD algorithm for training a linear regression model, including the explicit formulas (i.e, formulas you would need to code it with numpy) of the loss function and its gradient. [10]
 
+
+
 #### 6. Does the SGD algorithm for linear regression always find the best solution on the training data? If yes, explain under what conditions it happens; if not, explain why it is not guaranteed to converge. What properties of the error function does this depend on? [10]
+
+
 
 #### 7. After training a model with SGD, you ended up with a low training error and a high test error. Using the learning curves, explain what might have happened and what steps you might take to prevent this from happening. [10]
 
+- What happened?
+  - low training error and high test error sounds like a overfitting the model
+
+- What steps to take to prevent this?
+  - if its too late, we can:
+    - regularize the data, or
+    - take the best validation checkpoint (e.g. early stopping)
+  - otherwise we can
+    - increase $L^2$ strength $λ$
+    - reduce capacity (lower polynomial degree $M$)
+    - collect more data
+    - early stop on validation loss
+
 #### 8. You were given a fixed training set and a fixed test set, and you are supposed to report model performance on that test set. You need to decide what hyperparameters to use. How will you proceed and why? [10]
+
+Already mentioned inside [here](#4-explain-the-difference-between-hyperparameters-and-parameters-5)
 
 #### 9. What methods can be used to normalize feature values? Explain why it is useful. [5]
 
+Common solutions:
+
+- Normalization:
+  - $x_{i,j}^{norm} = \frac{x_{i,j} - min_k x_{k,j}}{max_k x_{k,j} - min_k x_{k,j}}$
+  - `MinMaxScaler` in Skicit-learn
+
+- Standardization:
+  - $x_{i,j}^{standard} = \frac{x_{i,j} - \hat{μ_j}}{\hat{σ_j}}$
+  - `StandardScaler` in Skicit-learn
+
+- Why is it useful?
+  - features on different scales "pull" the gradient unequally, normalization lets one $α$ work and speeds/steadies convergence
+
 #### 10. You have a dataset with a categorical feature “color” with values {“red”, “green”, “blue”}. Explain why using integer encoding (red=0, green=1, blue=2) is problematic for linear regression. How would encode such feature instead? [10]
+
+- The main problem with integer encoding is that linear regression treats differences (green - red = 1) as meaningful distances/order, which is arbitrary for categories, creating fake ordering.
+
+- I would encode such feature with One-Hot encoding. The encoding in colors case would look like this:
+  - there are $3$ colors - red, green, blue
+  - create a value for each of them with binary vector of length $3$ with $1$ at one position inside the vector.
+  - $red = [1,0,0]$, $green = [0,1,0]$ and $blue = [0,0,1]$
+  - this solves the problem, because the model learns a separate wirght per category
 
 ## Lecture 3
 
