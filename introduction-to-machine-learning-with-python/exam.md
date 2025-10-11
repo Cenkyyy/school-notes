@@ -114,6 +114,16 @@ A computer program is said to learn from experience $E$ with respect to some cla
   - if we denote $X \in R^{N x D}$ the matrix of input values with $x_i$ on a row $i$ and $t \in R^N$ the vector of target values, we can write it as:
     - $\frac{1}{2} \lVert Xw - t \rVert^2$, because:
       - $\frac{1}{2} \lVert Xw - t \rVert^2 = \sum_i ((Xw - t)_i)^2 = \sum_i ((Xw)_i - t_i))^2 = \sum_i (x_i^T w - t_i)^2$
+  - then we can take partial derivates with respect to each component $w_j$ and set to zero
+    - $\frac{∂}{∂ w_j} \frac{1}{2} \sum_i^N (x_i^T w - t_i)^2 = \frac{1}{2} \sum_i^N (2(x_i^T w - t_i) x_{ij}) = \sum_i^N x_{ij}(x_i^T w - t_i)$
+    - so we want for all $j$ that $\sum_i^N x_{ij}(x_i^T w - t_i) = 0$
+  - we can then rewrite the explicit sum into matrix form
+    - let $X_{*,j}$ denote the $j-th$ column of $X$, we get
+      - $X_{*,j}^T (Xw - t) = 0$ iff $X^T (Xw-t) = 0$
+    - which we can rewrite to
+      - $X^T Xw = X^T t$
+  - the matrix $X^T X$ is of size $D x D$ and with the assumption that $X^T X$ is invertible, we cna compute its inverse and get
+    - $w = (X^TX)^{-1} X^T t$
 
 ## Lecture 2
 
