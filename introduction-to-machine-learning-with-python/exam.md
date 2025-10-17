@@ -133,14 +133,18 @@ A computer program is said to learn from experience $E$ with respect to some cla
 
 #### 2. Explain the relationship between model capacity and overfitting/underfitting. How does increasing polynomial degree in linear regression affect model capacity, and what are the consequences? [10]
 
+- What is model capacity?
+  - 
+
 - Relationship between model capacity and overfitting/underfitting
-  - by modifying capacity, we can controol whether a model underfits or overfits
+  - by modifying capacity, we can control whether a model underfits or overfits
 
 - How does increasing polynomial degree in linear regression affect model capacity?
-  -  
+  -  with increasing polynomial degree $M$, linear regression fits more complex curves on the polynomial features $x = (x^0,...,x^M)$
 
 - What are the consequences?
-  - 
+  - low model capacity causes underfitting
+  - high model capacity causes overfitting
 
 Representation capacity
 Effective capacity
@@ -153,11 +157,11 @@ Effective capacity
 
 #### 4. Explain the difference between hyperparameters and parameters. [5]
 
-- **Parameters**
+**Parameters**
   - e.g. $w$ or $b$,
   - learned from the training data when training the model
 
--  **Hyperparameters**
+**Hyperparameters**
   - are parameters that cannot be learned from the training data, but need to set by us, in order to just start traning
   - are not adapted by the learning algorithm itself
   - e.g. polynomial degree $M$, $L^2$ strength $λ$, learning rate $α$
@@ -220,15 +224,68 @@ Common solutions:
   - there are $3$ colors - red, green, blue
   - create a value for each of them with binary vector of length $3$ with $1$ at one position inside the vector.
   - $red = [1,0,0]$, $green = [0,1,0]$ and $blue = [0,0,1]$
-  - this solves the problem, because the model learns a separate wirght per category
+  - this solves the problem, because the model learns a separate weight per category
 
 ## Lecture 3
 
 #### 1. Define binary classification, write down the perceptron algorithm, and show how a prediction is made for a given data instance $x$. [10]
 
+- Binary classification
+  - 
+
+- Perceptron algorithm
+  - **Input**: Linearly separable dataset ($X \in R^{N x D}, t \in {-1, 1}^N$)
+  - **Output**: Weights $w \in R^D$ such that $t_i w_i^T w > 0$ for all $i$
+  - **Steps**:
+    - $w <- 0$
+    - until all examples are classified correctly, process example $i$:
+      - $y <- x_i^T w$
+      - if $t_i y <= 0$ (incorrectly classified example):
+        - $w <- w + t_i x_i$
+
+- Given data instance $x$
+  - 
+
 #### 2. Explain what it means for a dataset to be linearly separable. Give an example of a simple 2D dataset that is not linearly separable and explain why the perceptron algorithm would fail on it. [10]
 
+- Set is called linearly separable, if there exists a weight vector $w$ such that this equation holds:
+  - Assuming the target value $t \in {-1,1}$, the goal is to find weights $w$ such that for all train data:
+    - $sign(y(w_i;w)) = sign(w_i^Tw) = t_i$, or equivalently
+    - $t_i y(x_i;w) = t_i x_i^T w > 0$
+   
+- Example of 2D dataset not linearly separable and why would perceptron algorithm fail
+  - the reason the perceptron algorithm would fail is that it would never finish, because the condition inside the algorithm is that all examples are classified correctly...which for not linearly separable set is not possible
+  - example:
+    - 
+
 #### 3. For discrete random variables, define entropy, cross-entropy, and Kullback-Leibler divergence, and prove the Gibbs inequality (i.e., that KL divergence is non-negative). [20]
+
+- Entropy
+  - amount of surprise in the whole distribution
+  - $H(P) = E_{x~P} [I(x)]= - E_{x~P} [log P(x)]$
+    - for discrete $P$: $H(P) = - \sum_x P(x)log P(x)$ (for $P(x) = 0$ we consider $P(x)log P(x) to be zero$
+    - for continuous $P$: $H(P) = - \int P(X)log P(x) dx$ (differential entropy - can be negative)
+
+- Cross-entropy
+  - $H(P,Q) = -E_{x~P}[log Q(x)]$
+    - where:
+      - bude merat rozdiel medzi dvoma distribuciami
+
+- Gibbs Inequality and its proof
+  - part 1: $H(P,Q) >= H(P)$
+  - part 2: $H(P) = H(P,Q) \iff P = Q$
+  - proof:
+    - part 1:
+      - consider $H(P) - H(P,Q) = \sum_x P(x) log \frac{Q(x)}{P(x)}$
+      - using the fact that $log(x) <= (x-1)$ with equality only for $x = 1$, we get:
+        - $\sum_x P(x) log \frac{Q(x)}{P(x)} <= \sum_x P(x) (\frac{Q(x)}{P(x)} - 1) = \sum_x Q(x) - \sum_x P(x) = 0
+        - also the picture, displaying the fact mentioned above: <img width="620" height="442" alt="image" src="https://github.com/user-attachments/assets/0ed20979-f8b9-4830-b9da-1afb004699a6" />
+    - part 2:
+      - For the equality to hold, \frac{Q(x)}{P(x)} must be $1$ for all $x$, e.g. $P = Q$
+
+- Kullback-Leibler (KL) divergence
+  - also called **relative entropy**
+  - $D_{KL}(P \lVert Q) = H(P, Q) - H(P) = E_{x~P}[log P(x) - log Q(x)]$
 
 #### 4. Explain the notion of likelihood in machine learning. What likelihood are we estimating, and why do we do it? [10]
 
